@@ -1,0 +1,7 @@
+Colerectal_Cancer_Prediction.egg-info/
+logs/
+__pycache__/
+*.pyc
+.DS_Store
+.vscode/
+venv/
