@@ -1,0 +1,46 @@
+# PIPELINE DEFINITION
+# Name: mlops-pipeline
+# Description: An example MLOps pipeline for colorectal cancer prediction
+components:
+  comp-data-model-training-op:
+    executorLabel: exec-data-model-training-op
+  comp-data-processing-op:
+    executorLabel: exec-data-processing-op
+deploymentSpec:
+  executors:
+    exec-data-model-training-op:
+      container:
+        command:
+        - python
+        - src/model_training.py
+        image: vijaydocker27915/my-mlops-app
+    exec-data-processing-op:
+      container:
+        command:
+        - python
+        - src/data_processing.py
+        image: vijaydocker27915/my-mlops-app
+pipelineInfo:
+  description: An example MLOps pipeline for colorectal cancer prediction
+  name: mlops-pipeline
+root:
+  dag:
+    tasks:
+      data-model-training-op:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-data-model-training-op
+        dependentTasks:
+        - data-processing-op
+        taskInfo:
+          name: data-model-training-op
+      data-processing-op:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-data-processing-op
+        taskInfo:
+          name: data-processing-op
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.14.6
